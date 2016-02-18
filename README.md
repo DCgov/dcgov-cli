@@ -21,7 +21,14 @@ dcgov [options] <subcommand> [subcommand options] <args>
 
 ### `dcgov init`
 
-Turns the current directory into a `git` repo with proper `LICENSE.md`, `CONTRIBUTING.md`, `README.md`, and `.about.yml` files.
+- Turns the current directory into a `git` repo with proper `LICENSE.md`, `CONTRIBUTING.md`, `README.md`, and `civic.json` files.
+- Installs [Poirot](https://github.com/dcgov/poirot) as a pre-commit hook with a [default set](https://github.com/DCgov/poirot-patterns/blob/master/default.txt) of patterns to check for. 
+- Creates a `develop` branch
+- Optionally creates a language-specific .gitignore using gitignore.io
+
+### `dcgov validate`
+
+- Checks that your `LICENSE.md`, `CONTRIBUTING.md`, `README.md`, and `civic.json` files are valid
 
 ### `dcgov setup`
 
