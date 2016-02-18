@@ -13,6 +13,16 @@ git checkout release
 make install
 ```
 
+## Requirements
+
+If you're running **Windows**, you should first [install the Git Bash command line](https://git-for-windows.github.io/).  
+
+For all operating systems, you will need Python (version 2.7 or 3.3+) and pip ([install instructions](https://pip.pypa.io/en/stable/installing/)).
+
+You should then install the Poirot and CivicJSON Python packages with:
+
+`pip install poirot civicjson`
+
 ## Usage
 
 ```
