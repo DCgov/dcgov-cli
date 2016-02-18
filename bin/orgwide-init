@@ -1,0 +1,195 @@
+#! /usr/bin/env bash
+
+LOCATION="$(pwd)"
+NAME="$(/usr/bin/basename $LOCATION)"
+ORG=$( echo `basename "$0"` | cut -d'-' -f1 )
+
+# Poirot pattern location
+PATTERNS="https://raw.githubusercontent.com/DCgov/poirot-patterns/master/default.txt"
+# Two other patterns that can be searched by Poirot
+# https://raw.githubusercontent.com/DCgov/poirot-patterns/master/financial.txt
+# https://raw.githubusercontent.com/DCgov/poirot-patterns/master/ids.txt
+
+# Check installations
+# TODO: check these during Makefile installation
+
+type git >/dev/null 2>&1 || {
+  echo "|| ERROR: git not found:"
+  echo "|| please install git"
+  exit 1
+}
+
+type python >/dev/null 2>&1 || {
+  echo "|| ERROR: python not found:"
+  exit 1
+}
+
+type pip >/dev/null 2>&1 || {
+  echo "|| ERROR: pip not found:"
+  echo "|| download the file at https://bootstrap.pypa.io/get-pip.py"
+  echo "|| then run it with python get-pip.py"
+  exit 1
+}
+
+type civicjson >/dev/null 2>&1 || {
+  echo "|| ERROR: civicjson module not found:"
+  echo "|| pip install civicjson should do the trick"
+  exit 1
+}
+
+type poirot >/dev/null 2>&1 || {
+  echo "|| ERROR: poirot not found:"
+  echo "|| pip install poirot should do the trick"
+}
+
+usage(){
+  echo -e "\nUsage:\n  $ORG init [options]\n"
+  echo "  Options:"
+  echo "  -d, --dest [DIR]      Repository location (default: current directory)"
+  echo "  -h, --help            Display this help message"
+  echo "  -n, --name [NAME]     Project name (default: current directory name)"
+  echo "  -l, --lang [LANG]     Add language-specific files"
+  echo "  -f, --force           Overwrite any existing files"
+  echo ""
+}
+
+# Convert known long options to short options
+for arg in "$@"; do
+  shift
+  case "$arg" in
+    --dest)
+      set -- "$@" "-d"
+      ;;
+    --help)
+      set -- "$@" "-h"
+      ;;
+    --name)
+      set -- "$@" "-n"
+      ;;
+    --lang)
+      set -- "$@" "-l"
+      ;;
+    --force)
+      set -- "$@" "-f"
+      ;;
+    --quiet)
+      set -- "$@" "-q"
+      ;;
+    *)
+      set -- "$@" "$arg"
+  esac
+done
+
+# Reset to beginning of arguments
+OPTIND=1
+
+# Process option flags
+while getopts "d:hfqn:l:" opt; do
+  case $opt in
+    d )
+      LOCATION="$OPTARG"
+      ;;
+    h )
+      usage
+      exit 0
+      ;;
+    n )
+      NAME="$OPTARG"
+      ;;
+    l )
+      LANGUAGE="$OPTARG"
+      ;;
+    f )
+      echo -n "Are you sure that you want to overwrite existing files? [y/n] "
+      read response
+      if [[ $response =~ y(es)? ]]; then
+        FORCE=true
+      else
+        exit 0
+      fi
+      ;;
+    q )
+      exec 1>/dev/null 2>/dev/null
+      ;;
+    \? )
+      echo "Unrecognized option: -$OPTARG\n"
+      usage
+      exit 1
+      ;;
+  esac
+done
+shift $((OPTIND -1))
+
+# Create project directory, if doesn't already exist, and move there
+mkdir -p "$LOCATION"
+cd "$LOCATION"
+
+# Initialize git repo in this directory
+git init >/dev/null
+
+# Grab LICENSE.md and CONTRIBUTING.md
+if [[ ! -e LICENSE.md ]] || [[ $FORCE ]]; then
+  echo "|| Getting LICENSE.md"
+  curl -sO https://raw.githubusercontent.com/DCgov/license/master/LICENSE.md
+fi
+if [[ ! -e CONTRIBUTING.md ]] || [[ $FORCE ]]; then
+  echo "|| Getting CONTRIBUTING.md"
+  curl -sO https://raw.githubusercontent.com/DCgov/license/master/CONTRIBUTING.md
+fi
+
+# Create README.md
+if [[ ! -e README.md ]] || [[ $FORCE ]]; then
+  echo "|| Creating README.md"
+  echo -e "# $NAME\n\n### Public domain\n\nThis project is in the public domain within the United States, and copyright \
+and related rights in the work worldwide are waived through the [CC0 1.0 Universal \
+public domain dedication](https://creativecommons.org/publicdomain/zero/1.0/). \
+For more information, see [LICENSE.md](LICENSE.md).\n\nAll contributions to this \
+project will be released under the CC0 dedication. By submitting a pull request, \
+you are affirming that the changes are yours to license and you are agreeing to \
+comply with this waiver of copyright interest, or that the changes are already in \
+the public domain." > README.md
+fi
+
+# Establish git branches
+git checkout -b develop >/dev/null 2>&1
+
+if [[ ! -e civic.json ]] || [[ $FORCE ]]; then
+  read -r -p "Do you want to initialize a civic.json file? [y/N] " response
+  case $response in 
+    [yY][eE][sS]|[yY]|[1] )
+      civicjson init
+      ;;
+    [nN][oO]|[nN]|[2] )
+      echo "OK, you can add a civicjson later with: civicjson init"
+      ;;
+    * )
+      echo "Invalid option"
+      clear
+      ;;
+  esac
+fi
+
+#Install git hooks
+if [[ ! -e .git/hooks/pre-commit ]] || [[ $FORCE ]]; then
+  echo "|| Creating empty pre-commit git hook"
+  touch .git/hooks/pre-commit
+fi
+
+if grep -q "poirot" .git/hooks/pre-commit; then
+  :
+else
+  echo "|| Adding Poirot to git hooks"
+  curl --silent https://raw.githubusercontent.com/DCgov/poirot/master/pre-commit-poirot -o .git/hooks/pre-commit-poirot
+  echo '.git/hooks/pre-commit-poirot -f "" -p "${PATTERNS}"' >> .git/hooks/pre-commit
+  chmod +x .git/hooks/pre-commit .git/hooks/pre-commit-poirot
+fi
+
+# Language-specific additions
+if [[ -n $LANGUAGE ]]; then
+  if [[ ! -e .gitignore ]] || [[ $FORCE ]]; then
+    # Using gitignore.io because GitHub's gitignore API is sensitive to
+    # capitalization, which causes problems
+    echo "|| Adding .gitignore for ${LANGUAGE}"
+    curl --silent https://www.gitignore.io/api/${LANGUAGE} -o .gitignore
+  fi
+fi
