@@ -7,7 +7,7 @@ It is a (very slight) modification of [18F's CLI tool](https://github.com/18F/18
 ## Installation
 
 ```bash
-git clone git@github.com:dcgov/dcgov-cli.git
+git clone https://github.com/dcgov/dcgov-cli.git
 cd dcgov-cli
 git checkout release
 make install
