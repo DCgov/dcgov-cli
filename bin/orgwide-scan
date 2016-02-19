@@ -5,6 +5,11 @@
 # pa11y
 
 SCANS=()
+# Poirot pattern location
+PATTERNS="https://raw.githubusercontent.com/DCgov/poirot-patterns/master/default.txt"
+# Two other patterns that can be searched by Poirot
+# https://raw.githubusercontent.com/DCgov/poirot-patterns/master/financial.txt
+# https://raw.githubusercontent.com/DCgov/poirot-patterns/master/ids.txt
 
 check() {
   cmd=$1
@@ -19,6 +24,7 @@ usage(){
 	echo -e "\nUsage:\n  $ORG brand [options]\n"
   echo "  Options:"
   echo "  -h, --help               Display this help message"
+  echo "  -p, --poirot             Scan entire revision history with Poirot"
   echo "  -a, --accessibility      Scan site accessibility using pa11y"
   echo "  -u, --url                The URL to scan"
   echo "  -q, --quiet              Quiet mode"
@@ -42,6 +48,9 @@ for arg in "$@"; do
     --quiet)
       set -- "$@" "-q"
       ;;
+    --poirot)
+      set -- "$@" "-p"
+      ;;
     --accessibility)
       set -- "$@" "-a"
       ;;
@@ -57,7 +66,7 @@ done
 OPTIND=1
 
 # Process background option flags first
-while getopts ":hqu:a" opt; do
+while getopts ":hpqu:a" opt; do
 	case "$opt" in
 		h )
 			usage
@@ -68,6 +77,9 @@ while getopts ":hqu:a" opt; do
       ;;
     u )
       URL=$OPTARG
+      ;;
+    p )
+      SCANS+=(poirot)
       ;;
     a )
       SCANS+=(a11y)
@@ -98,5 +110,7 @@ for scan in ${SCANS[@]}; do
         exit 1
       fi
       ;;
+    poirot )
+      poirot --revlist="all" --patterns="${PATTERNS}" --verbose
   esac
 done

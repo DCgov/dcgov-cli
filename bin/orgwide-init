@@ -154,13 +154,13 @@ fi
 git checkout -b develop >/dev/null 2>&1
 
 if [[ ! -e civic.json ]] || [[ $FORCE ]]; then
-  read -r -p "Do you want to initialize a civic.json file? [y/N] " response
+  read -r -p "Do you want to add a boilerplate civic.json file? [y/N] " response
   case $response in 
     [yY][eE][sS]|[yY]|[1] )
       civicjson init
       ;;
     [nN][oO]|[nN]|[2] )
-      echo "OK, you can add a civicjson later with: civicjson init"
+      echo "OK, you can add a civicjson later by re-running: $ORG init"
       ;;
     * )
       echo "Invalid option"
@@ -180,7 +180,7 @@ if grep -q "poirot" .git/hooks/pre-commit; then
 else
   echo "|| Adding Poirot to git hooks"
   curl --silent https://raw.githubusercontent.com/DCgov/poirot/master/pre-commit-poirot -o .git/hooks/pre-commit-poirot
-  echo '.git/hooks/pre-commit-poirot -f "" -p "${PATTERNS}"' >> .git/hooks/pre-commit
+  echo ".git/hooks/pre-commit-poirot -f "" -p \"${PATTERNS}\" --verbose" >> .git/hooks/pre-commit
   chmod +x .git/hooks/pre-commit .git/hooks/pre-commit-poirot
 fi
 
