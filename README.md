@@ -15,7 +15,7 @@ make install
 
 ## Requirements
 
-If you're running **Windows**, you should first [install the Git Bash command line](https://git-for-windows.github.io/).  
+If you're running **Windows**, you should first [install the Git Bash command line](https://git-for-windows.github.io/) and then set up [Make](http://gnuwin32.sourceforge.net/packages/make.htm).
 
 For all operating systems, you will need Python (version 2.7 or 3.3+) and pip ([install instructions](https://pip.pypa.io/en/stable/installing/)).
 
