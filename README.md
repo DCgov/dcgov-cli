@@ -15,13 +15,18 @@ make install
 
 ## Requirements
 
-If you're running **Windows**, you should first [install the Git Bash command line](https://git-for-windows.github.io/) and then set up [Make](http://gnuwin32.sourceforge.net/packages/make.htm).
+### Mac
 
-For all operating systems, you will need Python (version 2.7 or 3.3+) and pip ([install instructions](https://pip.pypa.io/en/stable/installing/)).
+- Python (version 2.7 or 3.3+). I recommend that you use [pyenv](https://github.com/yyuu/pyenv). Otherwise you're going to have to append sudo to avoid complaints that you're messing with system Python.
+- pip (download [this file](https://bootstrap.pypa.io/get-pip.py) and run it with `python get-pip.py`)
+- The Poirot and CivicJSON Python packages (install with `pip install poirot civicjson`)
 
-You should then install the Poirot and CivicJSON Python packages with:
+### Windows
 
-`pip install poirot civicjson`
+- The [Git Bash command line](https://git-for-windows.github.io/)
+- [Make](http://gnuwin32.sourceforge.net/packages/make.htm).
+- [Python](https://www.python.org/downloads/) (version 2.7 or 3.3+), with pip
+- The Poirot and CivicJSON Python packages (install with `pip install poirot civicjson`)
 
 ## Usage
 
