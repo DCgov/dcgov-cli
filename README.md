@@ -10,21 +10,22 @@ It is a (very slight) modification of [18F's CLI tool](https://github.com/18F/18
 git clone https://github.com/dcgov/dcgov-cli.git
 cd dcgov-cli
 git checkout release
-make install
+bash install
 ```
+
+You can remove the scripts by running `bash clean` from the dcgov-cli folder.
 
 ## Requirements
 
 ### Mac
 
-- Python (version 2.7 or 3.3+). I recommend that you use [pyenv](https://github.com/yyuu/pyenv). Otherwise you're going to have to append sudo to avoid complaints that you're messing with system Python.
+- Python (version 2.7 or 3.3+). You should use [pyenv](https://github.com/yyuu/pyenv) to manage your Python versions. Otherwise you're going to have to append sudo to the `bash` calls to avoid complaints that you're messing with system Python.
 - pip (download [this file](https://bootstrap.pypa.io/get-pip.py) and run it with `python get-pip.py`)
 - The Poirot and CivicJSON Python packages (install with `pip install poirot civicjson`)
 
 ### Windows
 
 - The [Git Bash command line](https://git-for-windows.github.io/)
-- [Make](http://gnuwin32.sourceforge.net/packages/make.htm).
 - [Python](https://www.python.org/downloads/) (version 2.7 or 3.3+), with pip
 - The Poirot and CivicJSON Python packages (install with `pip install poirot civicjson`)
 
