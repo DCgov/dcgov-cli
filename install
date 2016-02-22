@@ -1,0 +1,28 @@
+#! /usr/bin/env bash
+
+prefix=/usr/local/bin
+BINS=$( basename bin/orgwide-*)
+
+if [[ -e orgname ]]; then
+	ORG=$( cat orgname)
+fi
+
+if [[ -z ORG ]]; then
+	ORG=dcgov
+fi
+
+function setup() {
+	echo "Installing ${ORG} command"
+	mkdir -p ${prefix}
+	install -d -m 0755 ${prefix}
+	install -m 0755 orgwide ${prefix}
+	mv ${prefix}/orgwide ${prefix}/${ORG}
+	for cmd in ${BINS}; do
+		org_cmd=$( echo "${cmd}" | sed "s/orgwide/${ORG}/" )
+		echo "Installing ${org_cmd} subcommand"
+		install -m 0755 bin/${cmd} ${prefix}
+		mv ${prefix}/${cmd} ${prefix}/${org_cmd}
+	done
+}
+
+setup

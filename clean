@@ -1,0 +1,24 @@
+#! /usr/bin/env bash
+
+prefix=/usr/local/bin
+BINS=$( basename bin/orgwide-*)
+
+if [[ -e orgname ]]; then
+	ORG=$( cat orgname)
+fi
+
+if [[ -z ORG ]]; then
+	ORG=dcgov
+fi
+
+function clean() {
+	echo "Removing ${ORG} command"
+	rm ${prefix}/${ORG}
+	for cmd in ${BINS}; do
+		org_cmd=$( echo "${cmd}" | sed "s/orgwide/${ORG}/" )
+		echo "Removing ${org_cmd} subcommand"
+		rm ${prefix}/${org_cmd}
+	done
+}
+
+clean
