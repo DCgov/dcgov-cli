@@ -1,7 +1,7 @@
 #! /usr/bin/env bash
 
 prefix=/usr/local/bin
-BINS=$( basename bin/orgwide-*)
+BINS=$( basename bin/*)
 
 if [[ -e orgname ]]; then
 	ORG=$( cat orgname)
@@ -15,9 +15,8 @@ function clean() {
 	echo "Removing ${ORG} command"
 	rm ${prefix}/${ORG}
 	for cmd in ${BINS}; do
-		org_cmd=$( echo "${cmd}" | sed "s/orgwide/${ORG}/" )
-		echo "Removing ${org_cmd} subcommand"
-		rm ${prefix}/${org_cmd}
+		echo "Removing ${cmd} subcommand"
+		rm ${prefix}/${ORG}-${cmd}
 	done
 }
 

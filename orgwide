@@ -10,7 +10,7 @@ usage(){
   	echo "  Options:"
   	echo "  -h, --help            Display this help message"
 	echo "  -v, --version         Display version information"
-	echo -e "\nAvailable subcommands:\n${AVAILABLE//$CMD-/- }\n"
+	echo -e "\nAvailable subcommands:\n${AVAILABLE//$CMD-/  - }\n"
 }
 
 ORG=$( echo `basename "$0"` | cut -d'-' -f1 )
@@ -27,9 +27,9 @@ for arg in "$@"; do
     --help)
 			set -- "$@" "-h"
 			;;
-		--version)
-			set -- "$@" "-v"
-			;;
+	--version)
+		set -- "$@" "-v"
+		;;
     *)
 			set -- "$@" "$arg"
 			;;
@@ -51,7 +51,7 @@ while getopts ":hv" opt; do
 			exit 0
 			;;
 		\? )
-			echo "Unrecognized option: -$OPTARG\n"
+			echo -e "Unrecognized option: -$OPTARG\n"
 			usage
 			exit 1
 			;;
@@ -71,4 +71,4 @@ for var in "$@"; do
 done
 
 # Send to subcommand
-eval "${CMD}-${SUB} ${ARGS}"
+eval "${CMD} ${SUB} ${ARGS}"
