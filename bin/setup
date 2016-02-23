@@ -25,7 +25,9 @@ setup(){
   fi
 }
 
-ORG=$( cat ../orgname )
+DIR=$( dirname $0 )
+PARENT_DIR=$( dirname "${DIR}" )
+ORG=$( cat "${PARENT_DIR}/orgname" )
 
 if [[ $# -eq 0 ]]; then
   usage

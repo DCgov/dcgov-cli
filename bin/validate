@@ -29,7 +29,9 @@ for arg in "$@"; do
   esac
 done
 
-ORG=$( cat ../orgname )
+DIR=$( dirname $0 )
+PARENT_DIR=$( dirname "${DIR}" )
+ORG=$( cat "${PARENT_DIR}/orgname" )
 
 # Reset to beginning of arguments
 OPTIND=1

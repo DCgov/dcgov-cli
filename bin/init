@@ -2,7 +2,9 @@
 
 LOCATION="$(pwd)"
 NAME="$(/usr/bin/basename $LOCATION)"
-ORG=$( cat ../orgname )
+DIR=$( dirname $0 )
+PARENT_DIR=$( dirname "${DIR}" )
+ORG=$( cat "${PARENT_DIR}/orgname" )
 
 # Poirot pattern location
 PATTERNS="https://raw.githubusercontent.com/DCgov/poirot-patterns/master/default.txt"
