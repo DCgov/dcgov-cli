@@ -11,6 +11,7 @@ type civicjson >/dev/null 2>&1 || {
 type poirot >/dev/null 2>&1 || {
   echo "|| ERROR: poirot not found:"
   echo "|| pip install poirot should do the trick"
+  exit 1
 }
 
 # Convert known long options to short options
@@ -27,6 +28,8 @@ for arg in "$@"; do
       set -- "$@" "$arg"
   esac
 done
+
+ORG=$( cat ../orgname )
 
 # Reset to beginning of arguments
 OPTIND=1

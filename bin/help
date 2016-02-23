@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
 
-ORG=$( echo `basename "$0"` | cut -d'-' -f1 )
+ORG=$( cat ../orgname )
 
 usage(){
   echo -e "\nUsage:\n  $ORG help [subcommand]\n"

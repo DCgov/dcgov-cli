@@ -2,7 +2,7 @@
 
 LOCATION="$(pwd)"
 NAME="$(/usr/bin/basename $LOCATION)"
-ORG=$( echo `basename "$0"` | cut -d'-' -f1 )
+ORG=$( cat ../orgname )
 
 # Poirot pattern location
 PATTERNS="https://raw.githubusercontent.com/DCgov/poirot-patterns/master/default.txt"

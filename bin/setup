@@ -25,7 +25,7 @@ setup(){
   fi
 }
 
-ORG=$( echo `basename "$0"` | cut -d'-' -f1 )
+ORG=$( cat ../orgname )
 
 if [[ $# -eq 0 ]]; then
   usage
