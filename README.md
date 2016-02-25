@@ -2,7 +2,7 @@
 
 This is a command line utility to standardize common functions here at DCgov. It can be extended by putting any command with the format `dcgov-yourcommand` on your `PATH`.
 
-It is a (very slight) modification of [18F's CLI tool](https://github.com/18F/18f-cli).
+It is a (very slight) modification of [18F's CLI tool](https://github.com/18F/18f-cli). 
 
 ## Installation
 
