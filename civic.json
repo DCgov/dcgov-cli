@@ -7,7 +7,7 @@
     "repository": "https://github.com/DCgov/dcgov-cli", 
     "type": "Command Line Tool", 
     "thumbnail": "", 
-    "geography": [], 
+    "geography": ["Washington, DC"], 
     "contact": {
         "name": "Emanuel Feld", 
         "email": "open@dc.gov", 
@@ -22,7 +22,7 @@
     ], 
     "data": [], 
     "tags": [
-        "dcgov", "git", "cli", "documentation", "workflow"
+        "git", "github", "command line", "standard", "documentation", "workflow"
     ], 
     "links": [], 
     "id": "https://raw.githubusercontent.com/DCgov/civic.json/master/schemas/schema-v1.json"
