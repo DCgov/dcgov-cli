@@ -174,7 +174,7 @@ fi
 #Install git hooks
 if [[ ! -e .git/hooks/pre-commit ]] || [[ $FORCE ]]; then
   echo "|| Creating empty pre-commit git hook"
-  touch .git/hooks/pre-commit
+  echo "#! /usr/bin/env bash" > .git/hooks/pre-commit
 fi
 
 if grep -q "poirot" .git/hooks/pre-commit; then
